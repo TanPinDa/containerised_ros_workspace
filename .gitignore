@@ -1,4 +1,2 @@
-ros2_workspace/build
-ros2_workspace/install
-ros2_workspace/log
-ros2_workspace/.vscode
+ros2_workspace/*
+!ros2_workspace/.gitkeep
