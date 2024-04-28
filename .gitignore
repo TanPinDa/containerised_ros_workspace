@@ -1,2 +1,2 @@
 ros2_workspace/*
-!ros2_workspace/.gitkeep
+!ros2_workspace/src/.gitkeep
