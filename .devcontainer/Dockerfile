@@ -1,4 +1,4 @@
-FROM osrf/ros:humble-desktop
+FROM osrf/ros:noetic-desktop
 
 ARG USERNAME=rosdev
 ARG UID=1000
@@ -15,6 +15,16 @@ RUN apt update -q \
     && apt clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# For ceres
+RUN apt update -q \
+    && apt upgrade -q -y \
+    && apt install -y --no-install-recommends \    
+    libgoogle-glog-dev \
+    libgflags-dev \
+    libatlas-base-dev \
+    libeigen3-dev \
+    libsuitesparse-dev
+    
 # Create and switch to user
 RUN groupadd -g $GID $USERNAME \
     && useradd -lm -u $UID -g $USERNAME -s /bin/bash $USERNAME \
