@@ -11,6 +11,7 @@ RUN apt update -q \
     software-properties-common \
     python3-pip \
     xauth \
+    git \ 
     && apt clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -21,12 +22,12 @@ RUN groupadd -g $GID $USERNAME \
 USER $USERNAME
 
 # Create workspace so that user own this directory
-RUN mkdir -p /home/$USERNAME/ros2_ws/src
-WORKDIR /home/$USERNAME/ros2_ws
+RUN mkdir -p /home/$USERNAME/workspace/src
+WORKDIR /home/$USERNAME/workspace
 
 # Copy configuration files
 RUN echo 'source /opt/ros/'$ROS_DISTRO'/setup.bash' >> /home/$USERNAME/.bashrc \
-    && echo 'source /home/'$USERNAME'/ros2_ws/install/setup.bash' >> /home/$USERNAME/.bashrc
+    && echo 'source /home/'$USERNAME'/workspace/install/setup.bash' >> /home/$USERNAME/.bashrc
 
 # Setup entrypoint
 COPY ./ros_entrypoint.sh /

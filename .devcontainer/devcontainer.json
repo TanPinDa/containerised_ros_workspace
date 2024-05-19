@@ -22,7 +22,8 @@
                 "timonwong.shellcheck",
                 "yzhang.markdown-all-in-one",
                 "mhutchie.git-graph",
-                "eamodio.gitlens"
+                "eamodio.gitlens",
+                "ms-vscode.cpptools-themes"
             ],
             "settings": {
                 "files.associations": {
@@ -34,11 +35,11 @@
             }
         }
     },
-    "workspaceFolder": "/home/rosdev/ros2_ws",
-    "workspaceMount": "source=${localWorkspaceFolder}/ros2_ws,target=/home/rosdev/ros2_ws,type=bind",
-    "mounts": [
-        "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind"
-    ],
+    "workspaceFolder": "/home/rosdev/workspace",
+    "workspaceMount": "source=${localWorkspaceFolder}/workspace,target=/home/rosdev/workspace,type=bind",
+    // "mounts": [
+    //     "source=/tmp/.X11-unix,target=/tmp/.X11-unix"
+    // ],
     "containerEnv": {
         "DISPLAY": "${localEnv:DISPLAY}"
     },

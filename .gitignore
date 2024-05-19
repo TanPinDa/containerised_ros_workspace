@@ -1,2 +1,3 @@
-ros2_ws/*
-!ros2_ws/src/.gitkeep
+workspace/*
+!workspace/ros2_ws/.gitkeep
+!workspace/non_ros_pkgs/.gitkeep
