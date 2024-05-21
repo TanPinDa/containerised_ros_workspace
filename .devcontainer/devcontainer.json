@@ -2,7 +2,7 @@
     "name": "ROS Workspace",
     "remoteUser": "rosdev",
     "build": {
-        "dockerfile": "Dockerfile",
+        "dockerfile": "../Dockerfile",
         "args": {
             "ROS_DISTRO": "noetic",
             "USERNAME": "rosdev",

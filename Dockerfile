@@ -20,12 +20,13 @@ RUN apt update -q \
 
 ## --------------- Dev setup -----------------
 FROM base_setup as dev_setup
-# Mount and run the script to install some dependencies
-COPY ./install_dependencies.sh /
-RUN chmod +x /install_dependencies.sh \
-    && /install_dependencies.sh \
-    && rm -rf /dependencies
+# Mount and run the script to install dependencies
+COPY ./grab-workspace-deps.sh /
+COPY workspace/ /workspace/
+RUN chmod +x /grab-workspace-deps.sh \
+    && /grab-workspace-deps.sh
 # Clean up
+RUN rm -rf /grab-workspace-deps.sh /workspace
 RUN apt clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 ## ------------------------------------------
