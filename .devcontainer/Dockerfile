@@ -1,4 +1,8 @@
-FROM osrf/ros:noetic-desktop
+# This ARG will be overriden by the build argument
+ARG ROS_DISTRO=humble 
+
+## ---------------- Base setup ----------------
+FROM osrf/ros:$ROS_DISTRO-desktop as base_setup
 
 ARG USERNAME=rosdev
 ARG UID=1000
@@ -11,20 +15,23 @@ RUN apt update -q \
     software-properties-common \
     python3-pip \
     xauth \
-    git \ 
-    && apt clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    git
+## -------------------------------------------
 
-# For ceres
-RUN apt update -q \
-    && apt upgrade -q -y \
-    && apt install -y --no-install-recommends \    
-    libgoogle-glog-dev \
-    libgflags-dev \
-    libatlas-base-dev \
-    libeigen3-dev \
-    libsuitesparse-dev
-    
+## --------------- Dev setup -----------------
+FROM base_setup as dev_setup
+# Mount and run the script to install some dependencies
+COPY ./install_dependencies.sh /
+RUN chmod +x /install_dependencies.sh \
+    && /install_dependencies.sh \
+    && rm -rf /dependencies
+# Clean up
+RUN apt clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+## ------------------------------------------
+
+## --------------- Final stage --------------
+FROM dev_setup as final_stage
 # Create and switch to user
 RUN groupadd -g $GID $USERNAME \
     && useradd -lm -u $UID -g $USERNAME -s /bin/bash $USERNAME \
@@ -43,3 +50,4 @@ RUN echo 'source /opt/ros/'$ROS_DISTRO'/setup.bash' >> /home/$USERNAME/.bashrc \
 COPY ./ros_entrypoint.sh /
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
+## ------------------------------------------
