@@ -1,5 +1,5 @@
 # This ARG will be overriden by the build argument
-ARG ROS_DISTRO=humble 
+ARG ROS_DISTRO 
 
 ## ---------------- Base setup ----------------
 FROM osrf/ros:$ROS_DISTRO-desktop as base_setup
@@ -20,11 +20,18 @@ RUN apt update -q \
 
 ## --------------- Dev setup -----------------
 FROM base_setup as dev_setup
-# Mount and run the script to install dependencies
-COPY ./grab-workspace-deps.sh /
+# Mount the workspace and recursively search 
+# for dependencies to install
 COPY workspace/ /workspace/
-RUN chmod +x /grab-workspace-deps.sh \
-    && /grab-workspace-deps.sh
+# Iterate recursively through /workspace/non_ros_pkgs 
+# and run all files that match "install-deps.sh"
+RUN find /workspace/non_ros_pkgs -name \
+    "install-deps.sh" -exec sh {} \;
+
+# Iterate recursively through /workspace/ros_ws 
+# and run all files that match "install-deps.sh"
+RUN find /workspace/ros_ws -name "install-deps.sh" \
+    -exec sh {} \;
 # Clean up
 RUN rm -rf /grab-workspace-deps.sh /workspace
 RUN apt clean && \
@@ -48,7 +55,7 @@ RUN echo 'source /opt/ros/'$ROS_DISTRO'/setup.bash' >> /home/$USERNAME/.bashrc \
     && echo 'source /home/'$USERNAME'/workspace/install/setup.bash' >> /home/$USERNAME/.bashrc
 
 # Setup entrypoint
-COPY ./ros_entrypoint.sh /
+COPY ./.devcontainer/ros_entrypoint.sh /
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
 ## ------------------------------------------
