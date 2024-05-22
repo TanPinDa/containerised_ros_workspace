@@ -24,5 +24,5 @@ This repo is a simple vscode workspace that uses the dev-container extension to 
 To run anything that requires GUI display, you may need to run the following:
 
 ```bash
-    xhost +local:root`
+    xhost +local:root
 ```
