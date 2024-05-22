@@ -1,13 +1,15 @@
 {
-    "name": "ROS 2 Workspace humble-ros-desktop",
+    "name": "ROS Workspace",
     "remoteUser": "rosdev",
     "build": {
-        "dockerfile": "Dockerfile",
+        "dockerfile": "../Dockerfile",
         "args": {
+            "ROS_DISTRO": "noetic",
             "USERNAME": "rosdev",
             "GID": "1000",
             "UID": "1000"
-        }
+        },
+        "target": "final_stage"
     },
     "customizations": {
         "vscode": {
