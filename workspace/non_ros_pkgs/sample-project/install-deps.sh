@@ -9,10 +9,10 @@ apt install -y --no-install-recommends git libgoogle-glog-dev \
     libeigen3-dev \
     libsuitesparse-dev
 
-mkdir -p ./deps && cd ./deps
-git clone https://ceres-solver.googlesource.com/ceres-solver
-cd ceres-solver
+mkdir ./deps
+git clone --depth 1 --branch 2.2.0 https://ceres-solver.googlesource.com/ceres-solver ./deps
+cd ./deps/ceres-solver
 mkdir build && cd build
-cmake .. && make -j10 && make install
-cd ../../
-rm -rf ceres-solver
+cmake .. && make -j10 install
+cd ../../..
+rm -rf ./deps

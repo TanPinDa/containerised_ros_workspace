@@ -15,7 +15,7 @@ This repo is a simple vscode workspace that uses the dev-container extension to 
     }
   }
   ```
-- This repo expects a `install-deps.sh` in your project to add any additional apt dependencies or setup required. Please refer to sample_install-deps.sh for an example.
+- This repo expects a `install-deps.sh` in your project to add any additional apt dependencies or setup required. Please refer to `workspace/non_ros_pkgs/sample-project` for an example.
 - The `install-deps.sh` scripts found in workspace/non_ros_pkgs will be run first, followed by the scripts in `workspace/ros_ws`.
 - Reopen your project in a dev container.
 
