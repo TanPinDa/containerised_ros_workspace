@@ -25,13 +25,20 @@ FROM base_setup as dev_setup
 COPY workspace/ /workspace/
 # Iterate recursively through /workspace/non_ros_pkgs 
 # and run all files that match "install-deps.sh"
-RUN find /workspace/non_ros_pkgs -name \
-    "install-deps.sh" -exec sh {} \;
+# Run the scripts from their respective directories
+# to avoid any issues with relative paths
+RUN for file in $(find /workspace/non_ros_pkgs -name "install-deps.sh"); do \
+    cd $(dirname $file) && sh $(basename $file); \
+    done
 
 # Iterate recursively through /workspace/ros_ws 
 # and run all files that match "install-deps.sh"
-RUN find /workspace/ros_ws -name "install-deps.sh" \
-    -exec sh {} \;
+# Run the scripts from their respective directories
+# to avoid any issues with relative paths
+RUN for file in $(find /workspace/ros_ws -name "install-deps.sh"); do \
+    cd $(dirname $file) && sh $(basename $file); \
+    done
+
 # Clean up
 RUN rm -rf /grab-workspace-deps.sh /workspace
 RUN apt clean && \
